@@ -17,8 +17,7 @@ public class Food extends MenuItem {
     }
     
     @Override
-    public String getItemDetails(){
-        return "Food";
+    public String getItemDetails() {
+        return "Food: " + getName() + " | Category: " + category + " | Price: " + getPrice();
     }
-    
 }

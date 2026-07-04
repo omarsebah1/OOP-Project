@@ -1,56 +1,68 @@
 package com.mycompany.oop_project;
 
 import java.util.ArrayList;
+
 public class Restaurant {
     private ArrayList<Cashier> cashiers;
     private ArrayList<Customer> customers;
     private ArrayList<MenuItem> menu;
     private ArrayList<Order> orders;
 
-    public Restaurant(ArrayList<Cashier> cashiers, ArrayList<Customer> customers, ArrayList<MenuItem> menu, ArrayList<Order> orders) {
-        this.cashiers = cashiers;
-        this.customers = customers;
-        this.menu = menu;
-        this.orders = orders;
+    public Restaurant() {
+        this.cashiers = new ArrayList<>();
+        this.customers = new ArrayList<>();
+        this.menu = new ArrayList<>();
+        this.orders = new ArrayList<>();
+    }
+
+    public void addCashier(Cashier c) {
+        cashiers.add(c);
+    }
+
+    public void addCustomer(Customer c) {
+        customers.add(c);
+    }
+
+    public void addMenuItem(MenuItem m) {
+        menu.add(m);
+    }
+
+    public void addOrder(Order o) {
+        orders.add(o);
     }
 
     public ArrayList<Cashier> getCashiers() {
         return cashiers;
     }
 
-    public void setCashiers(ArrayList<Cashier> cashiers) {
-        this.cashiers = cashiers;
-    }
-
     public ArrayList<Customer> getCustomers() {
         return customers;
-    }
-
-    public void setCustomers(ArrayList<Customer> customers) {
-        this.customers = customers;
     }
 
     public ArrayList<MenuItem> getMenu() {
         return menu;
     }
 
-    public void setMenu(ArrayList<MenuItem> menu) {
-        this.menu = menu;
-    }
-
     public ArrayList<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(ArrayList<Order> orders) {
-        this.orders = orders;
-    }
-    
     public Customer findCustomerByPhone(String phone) {
-        // return customer data
+        for (Customer c : customers) {
+            if (c.getPhone().equals(phone)) {
+                return c;
+            }
+        }
+        return null;
     }
-    
+
     public ArrayList<Order> getOrdersByStatus(String status) {
-        // return order status
+        ArrayList<Order> filteredOrders = new ArrayList<>();
+        for (Order o : orders) {
+            if (o.getOrderStatus().equalsIgnoreCase(status)) {
+                filteredOrders.add(o);
+            }
+        }
+        return filteredOrders;
     }
 }

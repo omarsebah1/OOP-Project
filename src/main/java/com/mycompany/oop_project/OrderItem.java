@@ -24,8 +24,8 @@ public class OrderItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
+
     public double calculateSubTotal() {
-        return 0;
+        return item.getPrice() * quantity;
     }
 }
