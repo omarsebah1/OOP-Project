@@ -1,60 +1,45 @@
 package com.mycompany.oop_project;
 
 public class Customer extends Person {
-    private int loyaltyPoints;
+    private String customerUuid;
     private int visitCount;
+    private int loyaltyPoints;
 
-    public Customer(int id, String name, String phone) {
+    public Customer(int id, String name, String phone, String customerUuid) {
         super(id, name, phone);
-        this.loyaltyPoints = 0;
+        this.customerUuid = customerUuid;
         this.visitCount = 0;
+        this.loyaltyPoints = 0;
     }
 
-    public int getLoyaltyPoints() {
-        return loyaltyPoints;
-    }
-
-    public void setLoyaltyPoints(int loyaltyPoints) {
-        this.loyaltyPoints = loyaltyPoints;
-    }
-
-    public int getVisitCount() {
-        return visitCount;
-    }
-
-    public void setVisitCount(int visitCount) {
-        this.visitCount = visitCount;
-    }
-
-    public void addVisitAndPoints(int points) {
+    public String getCustomerUuid() { return customerUuid; }
+    public int getVisitCount() { return visitCount; }
+    public void incrementVisitsAndPoints(int points) {
         this.visitCount++;
         this.loyaltyPoints += points;
     }
 
     public String getLoyaltyTier() {
-        if (loyaltyPoints >= 15) {
-            return "Diamond";
-        } else if (loyaltyPoints > 7) {
-            return "Gold";
-        } else if (loyaltyPoints >= 4) {
-            return "Silver";
-        } else {
-            return "Bronze";
-        }
+        if (visitCount >= 60) return "VIP";
+        if (visitCount >= 40) return "Diamond";
+        if (visitCount >= 30) return "Platinum";
+        if (visitCount >= 20) return "Gold";
+        if (visitCount >= 10) return "Silver";
+        if (visitCount >= 5) return "Bronze";
+        return "New Customer";
     }
 
-    public double getDiscountPercentage() {
-        if (visitCount < 5) {
-            return 0.0;
-        }
+    public double getDiscountPercentage(double orderTotal) {
+        if (orderTotal <= 30.0 || visitCount < 5) return 0.0;
         String tier = getLoyaltyTier();
-        if (tier.equals("Silver")) {
-            return 0.02;
-        } else if (tier.equals("Gold")) {
-            return 0.05;
-        } else if (tier.equals("Diamond")) {
-            return 0.10;
+        switch (tier) {
+            case "Bronze": return 0.02;
+            case "Silver": return 0.03;
+            case "Gold": return 0.05;
+            case "Platinum": return 0.08;
+            case "Diamond": return 0.11;
+            case "VIP": return 0.15;
+            default: return 0.0;
         }
-        return 0.0;
     }
 }

@@ -9,23 +9,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public MenuItem getItem() {
-        return item;
-    }
-
-    public void setItem(MenuItem item) {
-        this.item = item;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public double calculateSubTotal() {
-        return item.getPrice() * quantity;
-    }
+    public MenuItem getItem() { return item; }
+    public int getQuantity() { return quantity; }
+    public double calculateSubTotal() { return item.getPrice() * quantity; }
 }
