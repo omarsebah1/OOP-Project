@@ -30,17 +30,19 @@ public class Customer extends Person {
     }
 
     public double getDiscountPercentage(double orderTotal) {
-        if (orderTotal <= 30.0 || visitCount < 5) return 0.0;
-        //&& instead of || 
+        if (orderTotal < 30.0 || this.visitCount < 5) {
+        return 0.0;
+    }
+        
         String tier = getLoyaltyTier();
-        switch (tier) {
-            case "Bronze": return 0.02;
-            case "Silver": return 0.03;
-            case "Gold": return 0.05;
-            case "Platinum": return 0.08;
-            case "Diamond": return 0.11;
-            case "VIP": return 0.15;
-            default: return 0.0;
-        }
+        return switch (tier) {
+            case "Bronze" -> 0.02;
+            case "Silver" -> 0.03;
+            case "Gold" -> 0.05;
+            case "Platinum" -> 0.08;
+            case "Diamond" -> 0.11;
+            case "VIP" -> 0.15;
+            default -> 0.0;
+        };
     }
 }

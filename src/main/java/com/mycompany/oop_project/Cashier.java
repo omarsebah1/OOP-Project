@@ -49,6 +49,7 @@ public class Cashier extends Person {
                         String uuid = restaurant.generateUniqueCustomerUuid();
                         customer = new Customer(restaurant.getCustomers().size() + 1, name, phone, uuid);
                         restaurant.getCustomers().add(customer);
+                        restaurant.saveCustomersToFile();
                         System.out.println("Customer Added with ID: " + uuid);
                     } else continue;
                 }
@@ -125,6 +126,7 @@ public class Cashier extends Person {
                         target.setOrderStatus("completed");
                         int points = (int)(target.calculateFinalTotal() / 10);
                         target.getCustomer().incrementVisitsAndPoints(points);
+                        restaurant.saveCustomersToFile();
                         System.out.println("Order completed successfully.");
                     } else if (op == 2) {
                         target.setOrderStatus("canceled");

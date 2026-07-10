@@ -135,6 +135,7 @@ public class Admin extends Person {
                             String id = restaurant.generateNextProductId("D");
                             restaurant.getMenu().add(new Drink(id, name, price, size));
                         }
+                        restaurant.saveMenuToFile();
                         System.out.println("Item added successfully!");
                     } else if (subChoice == 3) {
                         System.out.print("Enter Product ID to remove: ");
@@ -145,6 +146,7 @@ public class Admin extends Person {
                         }
                         if (toRemove != null) {
                             restaurant.getMenu().remove(toRemove);
+                            restaurant.saveMenuToFile();
                             System.out.println("Item removed successfully!");
                         } else {
                             System.out.println("Product ID not found!");
