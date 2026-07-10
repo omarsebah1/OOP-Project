@@ -1,0 +1,4 @@
+Food,F1001,Beef Burger,12.0,Main Course
+Food,F1002,Chicken Pizza,15.0,Main Course
+Drink,D2001,Coca Cola,2.0,Cold Drink
+Food,F1003,ewf,10.0,Main Course
