@@ -31,6 +31,7 @@ public class Customer extends Person {
 
     public double getDiscountPercentage(double orderTotal) {
         if (orderTotal <= 30.0 || visitCount < 5) return 0.0;
+        //&& instead of || 
         String tier = getLoyaltyTier();
         switch (tier) {
             case "Bronze": return 0.02;

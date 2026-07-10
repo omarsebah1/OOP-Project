@@ -1,9 +1,9 @@
 package com.mycompany.oop_project;
 
 public abstract class Person {
-    private int id;
-    private String name;
-    private String phone;
+    final private int id;
+    final private String name;
+    final private String phone;
 
     public Person(int id, String name, String phone) {
         this.id = id;

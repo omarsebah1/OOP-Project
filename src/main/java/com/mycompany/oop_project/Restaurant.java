@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Restaurant {
-    private Admin admin;
-    private Cashier cashier;
-    private ArrayList<Customer> customers;
-    private ArrayList<MenuItem> menu;
-    private ArrayList<Order> orders;
+    final private Admin admin;
+    final private Cashier cashier;
+    final private ArrayList<Customer> customers;
+    final private ArrayList<MenuItem> menu;
+    final private ArrayList<Order> orders;
 
     public Restaurant() {
         this.customers = new ArrayList<>();
         this.menu = new ArrayList<>();
         this.orders = new ArrayList<>();
         
-        this.admin = new Admin("admin", "admin");
-        this.cashier = new Cashier(1, "John Doe", "0599000000", "cashier", "cashier");
+        this.admin = new Admin(1,"Amir Abu ALhen","0599000000","amir", "amir");
+        this.cashier = new Cashier(2, "Omar Abu Alsebah", "0599000000", "omar", "omar");
         
         menu.add(new Food("F1001", "Beef Burger", 12.0, "Main Course"));
         menu.add(new Food("F1002", "Chicken Pizza", 15.0, "Main Course"));
@@ -30,7 +30,7 @@ public class Restaurant {
     public ArrayList<Order> getOrders() { return orders; }
 
     public String generateNextProductId(String typePrefix) {
-        int lastNum = 1000;
+        int lastNum = 1000; // 4 digits no more no less
         for (MenuItem item : menu) {
             if (item.getId().startsWith(typePrefix)) {
                 try {
@@ -39,7 +39,7 @@ public class Restaurant {
                         lastNum = num;
                     }
                 } catch (Exception e) {
-                    // Ignore parsing errors
+                    System.out.println("error"+" " + e);
                 }
             }
         }

@@ -2,11 +2,12 @@ package com.mycompany.oop_project;
 
 import java.util.Scanner;
 
-public class Admin {
+public class Admin extends Person {
     private String username;
     private String password;
 
-    public Admin(String username, String password) {
+    public Admin(int id,String name,String phone,String username, String password) {
+        super( id, name, phone);
         this.username = username;
         this.password = password;
     }
