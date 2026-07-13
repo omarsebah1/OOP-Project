@@ -12,9 +12,9 @@ public class Main {
             System.out.println("  WELCOME TO RESTAURANT SYSTEM   ");
             System.out.println("==================================");
             System.out.print("Username: ");
-            String user = sc.nextLine();
+            String user = sc.nextLine().trim();
             System.out.print("Password: ");
-            String pass = sc.nextLine();
+            String pass = sc.nextLine().trim();
 
             if (user.equals(restaurant.getAdmin().getUsername()) && pass.equals(restaurant.getAdmin().getPassword())) {
                 restaurant.getAdmin().showDashboard(restaurant, sc);

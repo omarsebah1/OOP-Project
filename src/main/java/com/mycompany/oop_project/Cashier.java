@@ -3,8 +3,8 @@ package com.mycompany.oop_project;
 import java.util.Scanner;
 
 public class Cashier extends Person {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     public Cashier(int id, String name, String phone, String username, String password) {
         super(id, name, phone);
@@ -23,13 +23,20 @@ public class Cashier extends Person {
             System.out.println("3. View Menu");
             System.out.println("4. Logout");
             System.out.print("Enter your choice: ");
-            int choice = sc.nextInt(); sc.nextLine();
+            
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Validation Error: Please enter a valid integer number.");
+                continue;
+            }
 
             if (choice == 4) break;
 
             if (choice == 1) {
                 System.out.print("Enter Customer Phone Number (or 0 to return): ");
-                String phone = sc.nextLine();
+                String phone = sc.nextLine().trim();
                 if (phone.equals("0")) continue;
 
                 Customer customer = null;
@@ -61,7 +68,7 @@ public class Cashier extends Person {
                 while (true) {
                     restaurant.printMenu();
                     System.out.print("Enter Product ID to add (or 0 to finish): ");
-                    String pId = sc.nextLine();
+                    String pId = sc.nextLine().trim();
                     if (pId.equals("0")) break;
 
                     MenuItem item = null;
@@ -70,7 +77,14 @@ public class Cashier extends Person {
                     }
 
                     if (item != null) {
-                        System.out.print("Quantity: "); int qty = sc.nextInt(); sc.nextLine();
+                        System.out.print("Quantity: "); 
+                        int qty;
+                        try {
+                            qty = Integer.parseInt(sc.nextLine().trim());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Validation Error: Please enter a valid integer quantity.");
+                            continue;
+                        }
                         newOrder.addItem(item, qty);
                     } else System.out.println("Invalid Product ID!");
                 }
@@ -110,7 +124,13 @@ public class Cashier extends Person {
                 }
                 
                 System.out.print("Enter Order ID to update (or 0 to return): ");
-                int id = sc.nextInt(); sc.nextLine();
+                int id;
+                try {
+                    id = Integer.parseInt(sc.nextLine().trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("Validation Error: Please enter a valid integer order ID.");
+                    continue;
+                }
                 if (id == 0) continue;
 
                 Order target = null;
@@ -121,7 +141,15 @@ public class Cashier extends Person {
                 if (target != null) {
                     System.out.println("1. Complete Order\n2. Cancel Order");
                     System.out.print("Select operation: ");
-                    int op = sc.nextInt(); sc.nextLine();
+                    
+                    int op;
+                    try {
+                        op = Integer.parseInt(sc.nextLine().trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Validation Error: Please enter an integer option.");
+                        continue;
+                    }
+                    
                     if (op == 1) {
                         target.setOrderStatus("completed");
                         int points = (int)(target.calculateFinalTotal() / 10);
