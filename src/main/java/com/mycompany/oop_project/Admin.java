@@ -3,11 +3,11 @@ package com.mycompany.oop_project;
 import java.util.Scanner;
 
 public class Admin extends Person {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
-    public Admin(int id,String name,String phone,String username, String password) {
-        super( id, name, phone);
+    public Admin(int id, String name, String phone, String username, String password) {
+        super(id, name, phone);
         this.username = username;
         this.password = password;
     }
@@ -22,7 +22,14 @@ public class Admin extends Person {
             System.out.println("2. Manage Products");
             System.out.println("3. Logout");
             System.out.print("Enter your choice: ");
-            int choice = sc.nextInt(); sc.nextLine();
+            
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Validation Error: Please enter a valid integer number.");
+                continue;
+            }
 
             if (choice == 3) break;
 
@@ -35,7 +42,14 @@ public class Admin extends Person {
                     System.out.println("4. Show All Orders");
                     System.out.println("5. Back");
                     System.out.print("Enter your choice: ");
-                    int subChoice = sc.nextInt(); sc.nextLine();
+                    
+                    int subChoice;
+                    try {
+                        subChoice = Integer.parseInt(sc.nextLine().trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Validation Error: Please enter a valid integer number.");
+                        continue;
+                    }
 
                     if (subChoice == 5) break;
                     if (subChoice < 1 || subChoice > 4) {
@@ -85,7 +99,14 @@ public class Admin extends Person {
                     System.out.println("3. Remove Product");
                     System.out.println("4. Back");
                     System.out.print("Enter your choice: ");
-                    int subChoice = sc.nextInt(); sc.nextLine();
+                    
+                    int subChoice;
+                    try {
+                        subChoice = Integer.parseInt(sc.nextLine().trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Validation Error: Please enter a valid integer number.");
+                        continue;
+                    }
 
                     if (subChoice == 4) break;
 
@@ -96,15 +117,31 @@ public class Admin extends Person {
                         System.out.println("1. Food");
                         System.out.println("2. Drink");
                         System.out.print("Enter your selection (1-2): ");
-                        int type = sc.nextInt(); sc.nextLine();
+                        
+                        int type;
+                        try {
+                            type = Integer.parseInt(sc.nextLine().trim());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Validation Error: Invalid format.");
+                            continue;
+                        }
                         
                         if (type != 1 && type != 2) {
                             System.out.println("Invalid selection!");
                             continue;
                         }
 
-                        System.out.print("Enter Name: "); String name = sc.nextLine();
-                        System.out.print("Enter Price: "); double price = sc.nextDouble(); sc.nextLine();
+                        System.out.print("Enter Name: "); 
+                        String name = sc.nextLine();
+                        System.out.print("Enter Price: "); 
+                        
+                        double price;
+                        try {
+                            price = Double.parseDouble(sc.nextLine().trim());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Validation Error: Invalid price number.");
+                            continue;
+                        }
                         
                         if (type == 1) {
                             System.out.println("\nSelect Category:");
@@ -112,7 +149,15 @@ public class Admin extends Person {
                             System.out.println("2. Appetizers");
                             System.out.println("3. Desserts");
                             System.out.print("Enter your selection (1-3): ");
-                            int catChoice = sc.nextInt(); sc.nextLine();
+                            
+                            int catChoice;
+                            try {
+                                catChoice = Integer.parseInt(sc.nextLine().trim());
+                            } catch (NumberFormatException e) {
+                                System.out.println("Validation Error: Invalid format.");
+                                continue;
+                            }
+                            
                             String cat = "General Food";
                             if (catChoice == 1) cat = "Main Course";
                             else if (catChoice == 2) cat = "Appetizers";
@@ -126,7 +171,15 @@ public class Admin extends Person {
                             System.out.println("2. Medium");
                             System.out.println("3. Large");
                             System.out.print("Enter your selection (1-3): ");
-                            int sizeChoice = sc.nextInt(); sc.nextLine();
+                            
+                            int sizeChoice;
+                            try {
+                                sizeChoice = Integer.parseInt(sc.nextLine().trim());
+                            } catch (NumberFormatException e) {
+                                System.out.println("Validation Error: Invalid format.");
+                                continue;
+                            }
+                            
                             String size = "Medium";
                             if (sizeChoice == 1) size = "Small";
                             else if (sizeChoice == 2) size = "Medium";

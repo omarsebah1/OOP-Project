@@ -14,6 +14,16 @@ public class Customer extends Person {
 
     public String getCustomerUuid() { return customerUuid; }
     public int getVisitCount() { return visitCount; }
+    public int getLoyaltyPoints() { return loyaltyPoints; }
+
+    public void setVisitCount(int visitCount) {
+        this.visitCount = visitCount;
+    }
+
+    public void setLoyaltyPoints(int loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
     public void incrementVisitsAndPoints(int points) {
         this.visitCount++;
         this.loyaltyPoints += points;
@@ -31,8 +41,8 @@ public class Customer extends Person {
 
     public double getDiscountPercentage(double orderTotal) {
         if (orderTotal < 30.0 || this.visitCount < 5) {
-        return 0.0;
-    }
+            return 0.0;
+        }
         
         String tier = getLoyaltyTier();
         return switch (tier) {

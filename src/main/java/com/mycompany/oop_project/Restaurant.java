@@ -5,6 +5,7 @@ import java.util.Random;
 import java.io.*;
 
 public class Restaurant {
+
     private final Admin admin;
     private final Cashier cashier;
     private final ArrayList<Customer> customers;
@@ -18,31 +19,45 @@ public class Restaurant {
         this.customers = new ArrayList<>();
         this.menu = new ArrayList<>();
         this.orders = new ArrayList<>();
-        
+
         this.admin = new Admin(1, "AMIR ABUALHIN", "0567850098", "amir", "amir");
         this.cashier = new Cashier(2, "Omar Abu Alsebah", "0599000000", "omar", "omar");
-        
+
         initializePaths();
         loadMenuFromFile();
         loadCustomersFromFile();
     }
 
-    public Admin getAdmin() { return admin; }
-    public Cashier getCashier() { return cashier; }
-    public ArrayList<Customer> getCustomers() { return customers; }
-    public ArrayList<MenuItem> getMenu() { return menu; }
-    public ArrayList<Order> getOrders() { return orders; }
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public Cashier getCashier() {
+        return cashier;
+    }
+
+    public ArrayList<Customer> getCustomers() {
+        return customers;
+    }
+
+    public ArrayList<MenuItem> getMenu() {
+        return menu;
+    }
+
+    public ArrayList<Order> getOrders() {
+        return orders;
+    }
 
     private void initializePaths() {
         try {
             String userDir = System.getProperty("user.dir");
             String targetPath = userDir + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "com" + File.separator + "mycompany" + File.separator + "oop_project" + File.separator + "data";
-            
+
             File dataDir = new File(targetPath);
             if (!dataDir.exists()) {
                 dataDir.mkdirs();
             }
-            
+
             this.menuFile = targetPath + File.separator + "menu.txt";
             this.customerFile = targetPath + File.separator + "customerList.txt";
         } catch (Exception e) {
@@ -65,9 +80,13 @@ public class Restaurant {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
                 String[] details = line.split(",");
-                if (details.length < 5) continue;
+                if (details.length < 5) {
+                    continue;
+                }
 
                 String type = details[0].trim();
                 String id = details[1].trim();
@@ -120,9 +139,13 @@ public class Restaurant {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
                 String[] details = line.split(",");
-                if (details.length < 6) continue;
+                if (details.length < 6) {
+                    continue;
+                }
 
                 int id = Integer.parseInt(details[0].trim());
                 String name = details[1].trim();
@@ -132,10 +155,8 @@ public class Restaurant {
                 int points = Integer.parseInt(details[5].trim());
 
                 Customer customer = new Customer(id, name, phone, uuid);
-                customer.incrementVisitsAndPoints(points);
-                for (int i = 1; i < visits; i++) {
-                    customer.incrementVisitsAndPoints(0);
-                }
+                customer.setVisitCount(visits);
+                customer.setLoyaltyPoints(points);
                 customers.add(customer);
             }
         } catch (FileNotFoundException e) {
@@ -152,22 +173,12 @@ public class Restaurant {
     public void saveCustomersToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(customerFile))) {
             for (Customer customer : customers) {
-                writer.write(customer.getId() + "," + customer.getName() + "," + customer.getPhone() + "," + customer.getCustomerUuid() + "," + customer.getVisitCount() + "," + getPoints(customer) + "\n");
+                writer.write(customer.getId() + "," + customer.getName() + "," + customer.getPhone() + "," + customer.getCustomerUuid() + "," + customer.getVisitCount() + "," + customer.getLoyaltyPoints() + "\n");
             }
         } catch (IOException e) {
             System.out.println("Database Error saving customer file: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Database Error writing customer data: " + e.getMessage());
-        }
-    }
-
-    private int getPoints(Customer customer) {
-        try {
-            java.lang.reflect.Field field = Customer.class.getDeclaredField("loyaltyPoints");
-            field.setAccessible(true);
-            return field.getInt(customer);
-        } catch (Exception e) {
-            return 0;
         }
     }
 
@@ -193,15 +204,24 @@ public class Restaurant {
         Random r = new Random();
         while (true) {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 3; i++) sb.append(letters.charAt(r.nextInt(letters.length())));
-            for (int i = 0; i < 3; i++) sb.append(r.nextInt(10));
+            for (int i = 0; i < 3; i++) {
+                sb.append(letters.charAt(r.nextInt(letters.length())));
+            }
+            for (int i = 0; i < 3; i++) {
+                sb.append(r.nextInt(10));
+            }
             String code = sb.toString();
-            
+
             boolean exists = false;
             for (Customer c : customers) {
-                if (c.getCustomerUuid().equals(code)) { exists = true; break; }
+                if (c.getCustomerUuid().equals(code)) {
+                    exists = true;
+                    break;
+                }
             }
-            if (!exists) return code;
+            if (!exists) {
+                return code;
+            }
         }
     }
 
