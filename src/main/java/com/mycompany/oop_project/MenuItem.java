@@ -1,6 +1,7 @@
 package com.mycompany.oop_project;
 
 public abstract class MenuItem {
+
     private String id;
     private String name;
     private double price;
@@ -11,11 +12,21 @@ public abstract class MenuItem {
         this.price = price;
     }
 
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public double getPrice() { return price; }
-    
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
     public abstract String getItemDetails();
+
     public abstract String getItemType();
+
     public abstract String getItemCategory();
 }

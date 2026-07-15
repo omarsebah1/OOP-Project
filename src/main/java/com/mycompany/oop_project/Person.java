@@ -1,6 +1,7 @@
 package com.mycompany.oop_project;
 
 public abstract class Person {
+
     final private int id;
     final private String name;
     final private String phone;
@@ -11,7 +12,15 @@ public abstract class Person {
         this.phone = phone;
     }
 
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public String getPhone() { return phone; }
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
 }

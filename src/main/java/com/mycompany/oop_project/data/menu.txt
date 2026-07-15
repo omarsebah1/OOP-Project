@@ -1,6 +1,6 @@
-Food,F1001,Beef Burger,12.0,Main Course
-Food,F1002,Chicken Pizza,15.0,Main Course
-Drink,D2001,Coca Cola,2.0,Cold Drink
-Food,F1003,ewf,10.0,Main Course
-Drink,D2002,water,1.0,Medium
-Drink,D2003,Sevenup,5.0,Small
+Food,F1001,Crispy Chicken,8.5,Main Course
+Food,F1002,BBQ Ribs Steak,18.0,Main Course
+Food,F1003,Mozzarella Sticks,5.0,Appetizer
+Food,F1004,Fries Bucket,3.5,Appetizer
+Drink,D2001,Fresh Orange Juice,3.0,Cold Drink
+Drink,D2002,Hot Espresso,2.5,Hot Drink
