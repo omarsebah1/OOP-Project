@@ -1,0 +1,5 @@
+00001,AMR123,Crispy Chicken Zinger (x2);Fresh Orange Juice (x1);Fries Bucket (x1),6.5,completed
+00002,OMR789,BBQ Ribs Steak (x1);Hot Espresso (x2),23.0,completed
+00003,KHL555,Chicken Pizza (x2);Coca Cola (x3),0.0,canceled
+00004,MHD777,Beef Burger (x3);Fries Bucket (x2);Coca Cola (x4),7.0,completed
+00005,YSF321,Mozzarella Sticks (x2);Fresh Orange Juice (x2),16.0,canceled

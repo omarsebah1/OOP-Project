@@ -14,18 +14,20 @@ public class Restaurant {
 
     private String menuFile;
     private String customerFile;
+    private String ordersFile;
 
     public Restaurant() {
         this.customers = new ArrayList<>();
         this.menu = new ArrayList<>();
         this.orders = new ArrayList<>();
 
-        this.admin = new Admin(1, "AMIR ABUALHIN", "0567850098", "amir", "amir");
+        this.admin = new Admin(1, "AMIR IYAD ABUALHIN", "0567850098", "amir", "amir");
         this.cashier = new Cashier(2, "Omar Abu Alsebah", "0599000000", "omar", "omar");
 
         initializePaths();
         loadMenuFromFile();
         loadCustomersFromFile();
+        loadOrdersFromFile();
     }
 
     public Admin getAdmin() {
@@ -60,6 +62,7 @@ public class Restaurant {
 
             this.menuFile = targetPath + File.separator + "menu.txt";
             this.customerFile = targetPath + File.separator + "customerList.txt";
+            this.ordersFile = targetPath + File.separator + "ordersList.txt";
         } catch (Exception e) {
             System.out.println("System Error initializing file paths: " + e.getMessage());
         }
@@ -100,12 +103,6 @@ public class Restaurant {
                     menu.add(new Drink(id, name, price, extra));
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Database Error: Menu file not found. " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Database Error reading menu file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Database Error: Invalid price format in menu file. " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Database Error loading menu: " + e.getMessage());
         }
@@ -118,8 +115,6 @@ public class Restaurant {
                 String extra = item.getItemCategory();
                 writer.write(type + "," + item.getId() + "," + item.getName() + "," + item.getPrice() + "," + extra + "\n");
             }
-        } catch (IOException e) {
-            System.out.println("Database Error saving menu file: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Database Error writing to menu: " + e.getMessage());
         }
@@ -128,11 +123,6 @@ public class Restaurant {
     private void loadCustomersFromFile() {
         File file = new File(customerFile);
         if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Database Error creating customer file: " + e.getMessage());
-            }
             return;
         }
 
@@ -143,7 +133,7 @@ public class Restaurant {
                     continue;
                 }
                 String[] details = line.split(",");
-                if (details.length < 6) {
+                if (details.length < 5) {
                     continue;
                 }
 
@@ -152,19 +142,11 @@ public class Restaurant {
                 String phone = details[2].trim();
                 String uuid = details[3].trim();
                 int visits = Integer.parseInt(details[4].trim());
-                int points = Integer.parseInt(details[5].trim());
 
                 Customer customer = new Customer(id, name, phone, uuid);
                 customer.setVisitCount(visits);
-                customer.setLoyaltyPoints(points);
                 customers.add(customer);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Database Error: Customer file not found. " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Database Error reading customer file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Database Error: Invalid customer format in file. " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Database Error loading customers: " + e.getMessage());
         }
@@ -173,12 +155,101 @@ public class Restaurant {
     public void saveCustomersToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(customerFile))) {
             for (Customer customer : customers) {
-                writer.write(customer.getId() + "," + customer.getName() + "," + customer.getPhone() + "," + customer.getCustomerUuid() + "," + customer.getVisitCount() + "," + customer.getLoyaltyPoints() + "\n");
+                writer.write(customer.getId() + "," + customer.getName() + "," + customer.getPhone() + "," + customer.getCustomerUuid() + "," + customer.getVisitCount() + "\n");
             }
-        } catch (IOException e) {
-            System.out.println("Database Error saving customer file: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Database Error writing customer data: " + e.getMessage());
+        }
+    }
+
+    public void saveOrdersToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ordersFile))) {
+            for (Order order : orders) {
+                StringBuilder itemsDetails = new StringBuilder();
+                for (OrderItem oi : order.getItemsList()) {
+                    itemsDetails.append(oi.getItem().getName())
+                            .append(" (x").append(oi.getQuantity()).append(")")
+                            .append(";");
+                }
+                if (itemsDetails.length() > 0) {
+                    itemsDetails.setLength(itemsDetails.length() - 1);
+                }
+
+                writer.write(order.getFormattedOrderId() + ","
+                        + order.getCustomer().getCustomerUuid() + ","
+                        + itemsDetails.toString() + ","
+                        + order.calculateFinalTotal() + ","
+                        + order.getOrderStatus() + "\n");
+            }
+        } catch (Exception e) {
+            System.out.println("Database Error saving orders file: " + e.getMessage());
+        }
+    }
+
+    private void loadOrdersFromFile() {
+        File file = new File(ordersFile);
+        if (!file.exists()) {
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                String[] details = line.split(",");
+                if (details.length < 5) {
+                    continue;
+                }
+
+                String rawIdStr = details[0].trim();
+                int orderId = Integer.parseInt(rawIdStr);
+                String customerUuid = details[1].trim();
+                String itemsSummary = details[2].trim();
+                String status = details[4].trim();
+
+                Customer targetCustomer = null;
+                for (Customer c : customers) {
+                    if (c.getCustomerUuid().equals(customerUuid)) {
+                        targetCustomer = c;
+                        break;
+                    }
+                }
+
+                if (targetCustomer == null) {
+                    targetCustomer = new Customer(0, "Unknown Customer", "000000", customerUuid);
+                }
+
+                Order order = new Order(orderId, targetCustomer);
+                order.setOrderStatus(status);
+
+                String[] items = itemsSummary.split(";");
+                for (String itemStr : items) {
+                    if (itemStr.contains("(x")) {
+                        String name = itemStr.substring(0, itemStr.indexOf("(x")).trim();
+                        int qty = Integer.parseInt(itemStr.substring(itemStr.indexOf("(x") + 2, itemStr.indexOf(")")));
+
+                        MenuItem actualItem = null;
+                        for (MenuItem m : menu) {
+                            if (m.getName().equalsIgnoreCase(name)) {
+                                actualItem = m;
+                                break;
+                            }
+                        }
+
+                        if (actualItem == null) {
+                            actualItem = new Food("F0000", name, 0.0, "Loaded");
+                        }
+
+                        order.addItem(actualItem, qty);
+                    }
+                }
+
+                orders.add(order);
+            }
+        } catch (Exception e) {
+            System.out.println("Database Error loading orders: " + e.getMessage());
         }
     }
 

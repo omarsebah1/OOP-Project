@@ -1,6 +1,7 @@
 package com.mycompany.oop_project;
 
 public class OrderItem {
+
     private MenuItem item;
     private int quantity;
 
@@ -9,7 +10,15 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public MenuItem getItem() { return item; }
-    public int getQuantity() { return quantity; }
-    public double calculateSubTotal() { return item.getPrice() * quantity; }
+    public MenuItem getItem() {
+        return item;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public double calculateSubTotal() {
+        return item.getPrice() * quantity;
+    }
 }

@@ -3,6 +3,7 @@ package com.mycompany.oop_project;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         Restaurant restaurant = new Restaurant();
         Scanner sc = new Scanner(System.in);

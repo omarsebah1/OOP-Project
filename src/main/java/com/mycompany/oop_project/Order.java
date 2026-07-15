@@ -3,6 +3,7 @@ package com.mycompany.oop_project;
 import java.util.ArrayList;
 
 public class Order {
+
     private int orderId;
     private Customer customer;
     private ArrayList<OrderItem> itemsList;
@@ -15,12 +16,29 @@ public class Order {
         this.orderStatus = "pending";
     }
 
-    public int getOrderId() { return orderId; }
-    public String getFormattedOrderId() { return String.format("%05d", orderId); }
-    public Customer getCustomer() { return customer; }
-    public ArrayList<OrderItem> getItemsList() { return itemsList; }
-    public String getOrderStatus() { return orderStatus; }
-    public void setOrderStatus(String status) { this.orderStatus = status; }
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public String getFormattedOrderId() {
+        return String.format("%05d", orderId);
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public ArrayList<OrderItem> getItemsList() {
+        return itemsList;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String status) {
+        this.orderStatus = status;
+    }
 
     public void addItem(MenuItem item, int qty) {
         itemsList.add(new OrderItem(item, qty));
