@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Cashier extends Person {
 
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     public Cashier(int id, String name, String phone, String username, String password) {
         super(id, name, phone);
@@ -59,7 +59,7 @@ public class Cashier extends Person {
 
                 if (customer != null) {
                     System.out.println("\nCustomer Found!");
-                    System.out.println("ID: " + customer.getCustomerUuid() + " | Name: " + customer.getName() + " | Tier: " + customer.getLoyaltyTier());
+                    System.out.println("ID: " + customer.getCustomerId() + " | Name: " + customer.getName() + " | Tier: " + customer.getLoyaltyTier());
                     System.out.print("Confirm Customer? (yes/no): ");
                     if (!sc.nextLine().equalsIgnoreCase("yes")) {
                         continue;
@@ -69,11 +69,11 @@ public class Cashier extends Person {
                     if (sc.nextLine().equalsIgnoreCase("yes")) {
                         System.out.print("Enter Name: ");
                         String name = sc.nextLine();
-                        String uuid = restaurant.generateUniqueCustomerUuid();
+                        String uuid = restaurant.generateCustomerId();
                         int nextId = restaurant.getCustomers().size() + 1;
                         customer = new Customer(nextId, name, phone, uuid);
                         restaurant.getCustomers().add(customer);
-                        restaurant.saveCustomersToFile();
+                        restaurant.saveCustomers();
                         System.out.println("Customer Added with ID: " + uuid);
                     } else {
                         continue;
@@ -136,7 +136,7 @@ public class Cashier extends Person {
                 System.out.println("Final Total: " + after + " $");
 
                 restaurant.getOrders().add(newOrder);
-                restaurant.saveOrdersToFile();
+                restaurant.saveOrders();
                 System.out.println("Order processed and set to PENDING status.");
 
             } else if (choice == 2) {
@@ -158,7 +158,7 @@ public class Cashier extends Person {
                 for (Order o : restaurant.getOrders()) {
                     if (o.getOrderStatus().equals("pending")) {
                         System.out.println(String.format("%-10s | %-12s | %-25s | %-12.2f | %-10s |",
-                                o.getFormattedOrderId(), o.getCustomer().getCustomerUuid(), o.getCustomer().getName(), o.calculateFinalTotal(), o.getOrderStatus()));
+                                o.getFormattedOrderId(), o.getCustomer().getCustomerId(), o.getCustomer().getName(), o.calculateFinalTotal(), o.getOrderStatus()));
                     }
                 }
 
@@ -199,12 +199,12 @@ public class Cashier extends Person {
                     if (op == 1) {
                         target.setOrderStatus("completed");
                         target.getCustomer().incrementVisits();
-                        restaurant.saveCustomersToFile();
-                        restaurant.saveOrdersToFile();
+                        restaurant.saveCustomers();
+                        restaurant.saveOrders();
                         System.out.println("Order completed successfully.");
                     } else if (op == 2) {
                         target.setOrderStatus("canceled");
-                        restaurant.saveOrdersToFile();
+                        restaurant.saveOrders();
                         System.out.println("Order canceled.");
                     }
                 } else {

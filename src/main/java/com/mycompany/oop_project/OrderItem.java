@@ -2,8 +2,8 @@ package com.mycompany.oop_project;
 
 public class OrderItem {
 
-    private MenuItem item;
-    private int quantity;
+    private final MenuItem item;
+    private final int quantity;
 
     public OrderItem(MenuItem item, int quantity) {
         this.item = item;

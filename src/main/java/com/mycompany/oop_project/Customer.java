@@ -2,17 +2,17 @@ package com.mycompany.oop_project;
 
 public class Customer extends Person {
 
-    private String customerUuid;
+    private final String customerId;
     private int visitCount;
 
-    public Customer(int id, String name, String phone, String customerUuid) {
+    public Customer(int id, String name, String phone, String customerId) {
         super(id, name, phone);
-        this.customerUuid = customerUuid;
+        this.customerId = customerId;
         this.visitCount = 0;
     }
 
-    public String getCustomerUuid() {
-        return customerUuid;
+    public String getCustomerId() {
+        return customerId;
     }
 
     public int getVisitCount() {
