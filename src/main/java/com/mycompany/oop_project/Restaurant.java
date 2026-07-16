@@ -25,9 +25,9 @@ public class Restaurant {
         this.cashier = new Cashier(2, "Omar Abu Alsebah", "0599000000", "omar", "omar");
 
         initializePaths();
-        loadMenuFromFile();
-        loadCustomersFromFile();
-        loadOrdersFromFile();
+        loadMenu();
+        loadCustomers();
+        loadOrders();
     }
 
     public Admin getAdmin() {
@@ -53,7 +53,10 @@ public class Restaurant {
     private void initializePaths() {
         try {
             String userDir = System.getProperty("user.dir");
-            String targetPath = userDir + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "com" + File.separator + "mycompany" + File.separator + "oop_project" + File.separator + "data";
+            String targetPath = userDir + File.separator + "src"
+                    + File.separator + "main" + File.separator + "java"
+                    + File.separator + "com" + File.separator + "mycompany"
+                    + File.separator + "oop_project" + File.separator + "data";
 
             File dataDir = new File(targetPath);
             if (!dataDir.exists()) {
@@ -64,17 +67,22 @@ public class Restaurant {
             this.customerFile = targetPath + File.separator + "customerList.txt";
             this.ordersFile = targetPath + File.separator + "ordersList.txt";
         } catch (Exception e) {
-            System.out.println("System Error initializing file paths: " + e.getMessage());
+            System.out.println("System Error initializing file paths: "
+                    + e.getMessage());
         }
     }
 
-    private void loadMenuFromFile() {
+    private void loadMenu() {
         File file = new File(menuFile);
         if (!file.exists()) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                writer.write("Food,F1001,Beef Burger,12.0,Main Course\n");
-                writer.write("Food,F1002,Chicken Pizza,15.0,Main Course\n");
-                writer.write("Drink,D2001,Coca Cola,2.0,Cold Drink\n");
+                writer.write("Food,F1001,Crispy Chicken,8.5,Main Course\n");
+                writer.write("Food,F1002,BBQ Ribs Steak,18.0,Main Course\n");
+                writer.write("Food,F1003,Mozzarella Sticks,5.0,Appetizer\n");
+                writer.write("Food,F1004,Fries Bucket,3.5,Appetizer\n");
+                writer.write("Drink,D2001,Fresh Orange Juice,3.0,Cold Drink\n");
+                writer.write("Drink,D2002,Hot Espresso,2.5,Hot Drink\n");
+
             } catch (IOException e) {
                 System.out.println("Database Error creating menu file: " + e.getMessage());
             }
@@ -108,7 +116,7 @@ public class Restaurant {
         }
     }
 
-    public void saveMenuToFile() {
+    public void saveMenu() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(menuFile))) {
             for (MenuItem item : menu) {
                 String type = item instanceof Food ? "Food" : "Drink";
@@ -120,7 +128,7 @@ public class Restaurant {
         }
     }
 
-    private void loadCustomersFromFile() {
+    private void loadCustomers() {
         File file = new File(customerFile);
         if (!file.exists()) {
             return;
@@ -140,10 +148,10 @@ public class Restaurant {
                 int id = Integer.parseInt(details[0].trim());
                 String name = details[1].trim();
                 String phone = details[2].trim();
-                String uuid = details[3].trim();
+                String uid = details[3].trim();
                 int visits = Integer.parseInt(details[4].trim());
 
-                Customer customer = new Customer(id, name, phone, uuid);
+                Customer customer = new Customer(id, name, phone, uid);
                 customer.setVisitCount(visits);
                 customers.add(customer);
             }
@@ -152,17 +160,17 @@ public class Restaurant {
         }
     }
 
-    public void saveCustomersToFile() {
+    public void saveCustomers() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(customerFile))) {
             for (Customer customer : customers) {
-                writer.write(customer.getId() + "," + customer.getName() + "," + customer.getPhone() + "," + customer.getCustomerUuid() + "," + customer.getVisitCount() + "\n");
+                writer.write(customer.getId() + "," + customer.getName() + "," + customer.getPhone() + "," + customer.getCustomerId() + "," + customer.getVisitCount() + "\n");
             }
         } catch (Exception e) {
             System.out.println("Database Error writing customer data: " + e.getMessage());
         }
     }
 
-    public void saveOrdersToFile() {
+    public void saveOrders() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ordersFile))) {
             for (Order order : orders) {
                 StringBuilder itemsDetails = new StringBuilder();
@@ -176,7 +184,7 @@ public class Restaurant {
                 }
 
                 writer.write(order.getFormattedOrderId() + ","
-                        + order.getCustomer().getCustomerUuid() + ","
+                        + order.getCustomer().getCustomerId() + ","
                         + itemsDetails.toString() + ","
                         + order.calculateFinalTotal() + ","
                         + order.getOrderStatus() + "\n");
@@ -186,7 +194,7 @@ public class Restaurant {
         }
     }
 
-    private void loadOrdersFromFile() {
+    private void loadOrders() {
         File file = new File(ordersFile);
         if (!file.exists()) {
             return;
@@ -211,7 +219,7 @@ public class Restaurant {
 
                 Customer targetCustomer = null;
                 for (Customer c : customers) {
-                    if (c.getCustomerUuid().equals(customerUuid)) {
+                    if (c.getCustomerId().equals(customerUuid)) {
                         targetCustomer = c;
                         break;
                     }
@@ -253,7 +261,7 @@ public class Restaurant {
         }
     }
 
-    public String generateNextProductId(String typePrefix) {
+    public String generateProductId(String typePrefix) {
         int lastNum = 1000;
         for (MenuItem item : menu) {
             if (item.getId().startsWith(typePrefix)) {
@@ -270,7 +278,7 @@ public class Restaurant {
         return typePrefix + (lastNum + 1);
     }
 
-    public String generateUniqueCustomerUuid() {
+    public String generateCustomerId() {
         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random r = new Random();
         while (true) {
@@ -285,7 +293,7 @@ public class Restaurant {
 
             boolean exists = false;
             for (Customer c : customers) {
-                if (c.getCustomerUuid().equals(code)) {
+                if (c.getCustomerId().equals(code)) {
                     exists = true;
                     break;
                 }

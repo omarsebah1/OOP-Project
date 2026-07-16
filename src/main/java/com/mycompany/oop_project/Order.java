@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Order {
 
-    private int orderId;
-    private Customer customer;
-    private ArrayList<OrderItem> itemsList;
+    private final int orderId;
+    private final Customer customer;
+    private final ArrayList<OrderItem> itemsList;
     private String orderStatus;
 
     public Order(int orderId, Customer customer) {

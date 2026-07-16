@@ -2,7 +2,7 @@ package com.mycompany.oop_project;
 
 public class Food extends MenuItem {
 
-    private String category;
+    private final String category;
 
     public Food(String id, String name, double price, String category) {
         super(id, name, price);
